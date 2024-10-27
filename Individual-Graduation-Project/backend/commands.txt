@@ -1,0 +1,3 @@
+0)билд: docker build -t your-image-name .
+1)запуск: docker run -v /I/Vex/Proga/Individual-Graduation-Project/backend/ai_models/audio2text/whisper-large-v3:/app/ai_models/audio2text/whisper-large-v3 --rm -it -p 8000:8000 my-fastapi-app
+2)тесты: docker run -v /I/Vex/Proga/Individual-Graduation-Project/backend/ai_models/audio2text/whisper-large-v3:/app/ai_models/audio2text/whisper-large-v3 --rm -it my-fastapi-app test
