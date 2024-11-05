@@ -21,10 +21,12 @@ from src.utils.other_utils import update_token_in_json_and_config
 def main():
     logger.debug("Начало работы..")
 
-    ping_ok, _ = ping()
+    ping_ok, ping_msg = ping()
 
     if not ping_ok:
         logger.error("Сервер не доступен")
+    else:
+        logger.info(f"Сервер доступен. ping: {round(float(ping_msg), 1)} ms")
     
     if HAVE_TOKEN and ping_ok:
         ok = verify_token(USER_TOKEN)
