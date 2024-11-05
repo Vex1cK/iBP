@@ -1,8 +1,8 @@
 import logging
-from config import logers_level
+from config import loggers_level
 
 logging.basicConfig(
-    level=logers_level,
+    level=loggers_level,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
@@ -96,7 +96,7 @@ def main():
     status, message = asyncio.run(get_sqlite_version())
     if status:
         logger.info(f"SQLite version: {message}")
-        uvicorn.run(app, host="localhost", port=8000, log_level=logers_level)
+        uvicorn.run(app, host="localhost", port=8000, log_level=loggers_level)
     else:
         logger.error(message)
         return 1

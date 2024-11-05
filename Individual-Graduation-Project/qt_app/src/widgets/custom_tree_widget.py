@@ -1,17 +1,19 @@
-from PySide6.QtWidgets import QTreeWidget, QMenu, QTreeWidgetItem, QMessageBox
-from PySide6.QtCore import Qt
-from datetime import datetime
-from src.config import AUDIO_PATH
 import logging
+logger = logging.getLogger(__name__)
+
+from PySide6.QtWidgets import QTreeWidget, QMenu, QTreeWidgetItem, QMessageBox
+from PySide6.QtCore import Qt, Slot
+from datetime import datetime
 import os
 
+from src.config.config import AUDIO_PATH
 
 
 class TreeWidgetAudioFiles(QTreeWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent_tab, parent=None):
         super().__init__(parent)
 
-        self.parent_tab = parent
+        self.parent_tab = parent_tab
 
         self.columns_count = 4
         self.file_name_index          = 0
@@ -20,7 +22,7 @@ class TreeWidgetAudioFiles(QTreeWidget):
         self.file_size_index          = 3
         
 
-        logging.info("Starting initializating AudioTree")
+        logger.debug("Starting initializating AudioTree")
 
         self.audio_root = AUDIO_PATH
 
@@ -31,9 +33,9 @@ class TreeWidgetAudioFiles(QTreeWidget):
         self.itemDoubleClicked.connect(self.on_item_double_clicked)
         self.itemChanged.connect(self.rename_file)
 
-        logging.info("AudioTree initialized, starting populating tree")
+        logger.debug("AudioTree initialized, starting populating tree")
         self.populate_tree()
-        logging.info("AudioTree tree populated")
+        logger.debug("AudioTree tree populated")
 
     @staticmethod
     def format_file_size(size_in_bytes):
@@ -89,8 +91,9 @@ class TreeWidgetAudioFiles(QTreeWidget):
 
         self.itemChanged.connect(self.rename_file)
     
+    @Slot()
     def refresh_tree(self):
-        logging.info("Refreshing tree")
+        logger.debug("Refreshing tree")
         self.clear()
         self.populate_tree()
 
@@ -98,7 +101,7 @@ class TreeWidgetAudioFiles(QTreeWidget):
         self.editItem(item, column)
 
     def contextMenuEvent(self, event):
-        logging.info("Context menu opening")
+        logger.debug("Context menu opening")
         item = self.itemAt(event.pos())
         if item:
             menu = QMenu(self)
@@ -124,7 +127,7 @@ class TreeWidgetAudioFiles(QTreeWidget):
                 self.refresh_tree()
     
     def rename_file(self, item : QTreeWidgetItem, column):
-        logging.info("Renaming file")
+        logger.debug("Renaming file")
         self.itemChanged.disconnect()
         old_name = item.data(column, Qt.UserRole)
         new_name = item.text(column)
@@ -136,15 +139,15 @@ class TreeWidgetAudioFiles(QTreeWidget):
                 os.rename(old_path, new_path)
                 item.setData(column, Qt.UserRole, new_name)
                 self.resizeColumnToContents(0)
-                logging.info("File renamed")
+                logger.debug("File renamed")
             except Exception as e:
-                logging.error(f"Failed to rename file: {e}")
+                logger.error(f"Failed to rename file: {e}")
                 QMessageBox.critical(self, "Error", f"Failed to rename file: {e}")
                 item.setText(column, old_name)
         self.itemChanged.connect(self.rename_file)
     
     def delete_item(self, item):
-        logging.info("Deleting file")
+        logger.debug("Deleting file")
         file_name = item.text(0)
         file_extension = item.data(self.file_extension_index, Qt.UserRole)
         file_path = os.path.join(self.audio_root, file_name + file_extension)
@@ -160,7 +163,7 @@ class TreeWidgetAudioFiles(QTreeWidget):
     
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_F2:
-            logging.info("F2 pressed")
+            logger.debug("F2 pressed")
             current_item = self.currentItem()
             if current_item:
                 self.editItem(current_item, 0)
@@ -169,7 +172,7 @@ class TreeWidgetAudioFiles(QTreeWidget):
         
     
     def on_item_double_clicked(self, item, column):
-        logging.info("Item double clicked")
+        logger.debug("Item double clicked")
         file_name = item.text(column)
         file_extension = item.data(self.file_extension_index, Qt.UserRole)
         file_path = os.path.join(self.audio_root, file_name + file_extension)

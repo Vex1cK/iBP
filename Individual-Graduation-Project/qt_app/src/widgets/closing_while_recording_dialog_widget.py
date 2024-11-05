@@ -1,3 +1,6 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from PySide6.QtWidgets import QDialog, QPushButton, QVBoxLayout, QLabel
 
 class ClosingDialog(QDialog):

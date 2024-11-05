@@ -1,34 +1,39 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout
-from PySide6.QtCore import Qt, Slot
-from src.custom_tree_widget import TreeWidgetAudioFiles
 import logging
+logger = logging.getLogger(__name__)
+
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QSizePolicy
+from PySide6.QtCore import Qt, Slot, QThreadPool
 import platform
 import os
 from datetime import datetime
+
+from src.widgets.custom_tree_widget import TreeWidgetAudioFiles
+from src.server.ml_api_client import MLClient
+from src.config.config import SERVER_URL
 
 class AudioTab(QWidget):
     def __init__(self, ui, main_self):
         super().__init__()
 
-        logging.info("AudioTab starting initialization")
+        logger.debug("AudioTab starting initialization")
 
         self.ui = ui
         self.main_self = main_self
 
-        tree_container = self.ui.treeContainer
-        custom_tree = TreeWidgetAudioFiles(self)
-        layout = QVBoxLayout(tree_container)
+        custom_tree = TreeWidgetAudioFiles(self, self.ui.treeContainer)
+        layout = QVBoxLayout(self.ui.treeContainer)
         layout.addWidget(custom_tree)
-        tree_container.setLayout(layout)
+        self.ui.treeContainer.setLayout(layout)
 
         self.ui.buttonRefresh.clicked.connect(custom_tree.refresh_tree)
         self.custom_tree = custom_tree
 
+        self.treadpool = QThreadPool()
 
-        logging.info("AudioTab initialized")
+        logger.debug("AudioTab initialized")
     
     def open_file(self, file_path):
-        logging.info("Opening file")
+        logger.debug("Opening file")
         system = platform.system()
         if system == "Windows":
             os.startfile(file_path)  # Windows
@@ -51,6 +56,13 @@ class AudioTab(QWidget):
             now = datetime.now().__str__().split('.')[0].replace(':', '-')
             output_path = os.path.join(self.custom_tree.audio_root, "Text from " + file_name + output_extension)
         
-        logging.info(f"Starting evaluating audio2text, {file_path=}, {output_path=}")
+        logger.debug(f"Starting evaluating audio2text, {file_path=}, {output_path=}")
 
-        # Преобразование
+        client = MLClient(SERVER_URL+"/ml/transcribe_audio", file_path, output_path, self.callback1)
+        self.treadpool.start(client)
+    
+    def callback1(self, status, msg):
+        if status:
+            logger.info("Преобразованно!")
+        else:
+            logger.error(f"Ошибка: {msg}")

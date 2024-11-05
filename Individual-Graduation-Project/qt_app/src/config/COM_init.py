@@ -1,9 +1,8 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import ctypes
 from ctypes import HRESULT
-import logging
-
-logging.basicConfig(level=logging.INFO)
-
 
 # Определение констант
 COINIT_APARTMENTTHREADED = 0x2  # STA модель
@@ -14,9 +13,9 @@ S_FALSE = 1
 # Попытка инициализации COM
 result = ctypes.windll.ole32.CoInitializeEx(None, COINIT_APARTMENTTHREADED)
 
-if result == 0:
-    logging.info("COM initialized")
-elif result == 1:
-    logging.info("COM has already been initialized in this thread")
+if result == S_OK:
+    logger.debug("COM initialized")
+elif result == S_FALSE:
+    logger.debug("COM has already been initialized in this thread")
 else:
-    logging.error(f"COM initialization error: {result}")
+    logger.error(f"COM initialization error: {result}")

@@ -78,3 +78,14 @@ async def verify_email(token: str, session: AsyncSession = Depends(get_async_ses
     if status != 200:
         raise HTTPException(status_code=status, detail=msg)
     return JSONResponse(status_code=status, content={'msg': msg})
+
+@router.post("/verify-token")
+async def verify_token(token: TokenData, session: AsyncSession = Depends(get_async_session)):
+    status, msg = await check_token(token.access_token, session)
+
+    if status != 200:
+        if status != 401:
+            logger.warning("Странный статус код")
+        raise HTTPException(status_code=status, detail=msg)
+    
+    return JSONResponse(status_code=status, content={'msg': msg})

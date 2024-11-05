@@ -24,6 +24,7 @@ Individual-Graduation-Project
 │   └── requirements.txt    # Необходимые для работы библиотеки
 ├── qt_app
 │   └── main.py             # Точка входа в QT приложение
+├── LICENCE
 └── README.md               # Описание и инструкция
 ```
 

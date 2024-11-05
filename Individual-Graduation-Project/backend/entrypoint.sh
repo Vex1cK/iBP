@@ -2,6 +2,7 @@
 
 A2T_MODEL_PATH="/app/ai_models/audio2text/whisper-large-v3"
 CHECKSUM_FILE='/app/checksums.txt'
+SKIP_CHECKSUMS=false
 
 # Функция для загрузки модели
 download_model_a2t() {
@@ -23,7 +24,7 @@ verify_checksums() {
 
 if [ ! -d "$A2T_MODEL_PATH" ] || [ -z "$(ls -A "$A2T_MODEL_PATH")" ]; then
     download_model_a2t
-elif ! verify_checksums; then
+elif [ "$SKIP_CHECKSUMS" = false ] && ! verify_checksums; then
     echo "Целостность файлов нарушена. Подгружаем файлы..."
     download_all_models
 else

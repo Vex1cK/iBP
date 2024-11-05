@@ -1,14 +1,16 @@
+import logging
+logger = logging.getLogger(__name__)
+
 from PySide6.QtCore import QThread, Signal, Slot, QObject
 from scipy.io.wavfile import write
-from src.config import AUDIO_PATH
 from datetime import datetime
 from time import sleep
 import soundcard as sc
 import numpy as np
 import threading
-import logging
 import os
 
+from src.config.config import AUDIO_PATH
 
 class Recorder(QObject):
     data_is_saving = Signal()
@@ -41,7 +43,7 @@ class Recorder(QObject):
     def stop_recording_input(self):
         input("Нажмите Enter для завершения записи...")
         self.recording.clear()
-        logging.info("Остановка...")
+        logger.debug("Остановка...")
 
     def stop_recording(self):
         self.recording_bool = True
@@ -49,7 +51,7 @@ class Recorder(QObject):
             sleep(0.01)
         self.recording.clear()
         self.data_is_saving.emit()
-        # logging.info("Остановка записи...")
+        # logger.debug("Остановка записи...")
 
     def save_data(self):
         if self.need_to_save:
@@ -72,12 +74,12 @@ class Recorder(QObject):
             with open(output_file, 'w') as file:  # to create file
                 ...
             write(output_file, self.sample_rate, all_data)
-            logging.info("Audio file saved")
+            logger.debug("Audio file saved")
 
             self.data_in = []
             self.data_out = []
         else:
-            logging.info("Audio file not saved (not need)")
+            logger.debug("Audio file not saved (not need)")
         self.data_saved.emit()
     
     def start_recording(self):
@@ -131,12 +133,12 @@ class RecorderThread(QThread):
     @Slot()
     def on_data_is_saving(self):
         self.data_is_saving.emit()
-        logging.info(f"data_is_saving emitted in RecorderThread")
+        logger.debug(f"data_is_saving emitted in RecorderThread")
     
     @Slot()
     def on_data_saved(self):
         self.data_saved.emit()
-        logging.info(f"data_saved emitted in RecorderThread")
+        logger.debug(f"data_saved emitted in RecorderThread")
         
 
 

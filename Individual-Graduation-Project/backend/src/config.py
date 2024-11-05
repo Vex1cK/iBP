@@ -4,7 +4,7 @@ import os
 
 load_dotenv()
 
-logers_level = 10
+loggers_level = 20
 # CRITICAL = 50
 # ERROR = 40
 # WARNING = 30
