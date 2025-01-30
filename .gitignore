@@ -162,12 +162,17 @@ cython_debug/
 #.idea/
 
 Individual-Graduation-Project/qt_app/audio_recordings/*
+Individual-Graduation-Project/qt_app/folders/*
+Individual-Graduation-Project/qt_app/full_texts/*
+Individual-Graduation-Project/qt_app/sum_texts/*
 Individual-Graduation-Project/qt_app/src/tests/
 
 Individual-Graduation-Project/backend/tests/test_db.sqlite
 Individual-Graduation-Project/backend/src/ML_api/users_audios/*
-Individual-Graduation-Project/vbackend/src/ML_api/users_texts/*
+Individual-Graduation-Project/backend/src/ML_api/users_texts/*
 
 Individual-Graduation-Project/backend/ai_models/*
 
 Individual-Graduation-Project/backend/commands.txt
+
+Individual-Graduation-Project/qt_app/BriefTalkAI_Installer.exe

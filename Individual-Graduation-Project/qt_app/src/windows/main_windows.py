@@ -1,37 +1,45 @@
 import logging
 logger = logging.getLogger(__name__)
 
-import os
 import ctypes
-from PySide6.QtWidgets import QWidget, QDialog, QMainWindow, QStackedWidget, QApplication, QLineEdit
+from PySide6.QtWidgets import QWidget, QDialog, QMainWindow, QStackedWidget, QApplication, QMessageBox
 from PySide6.QtCore import QTimer
+from PySide6.QtGui import QIcon
 
 from src.widgets.tabs.main_tab import MainTab
 from src.widgets.tabs.audio_files_tab import AudioTab
-from src.widgets.closing_while_recording_dialog_widget import ClosingDialog
+from src.widgets.tabs.full_text_tab import FullTextTab
+from src.widgets.tabs.sum_text_tab import SumTextTab
+from src.widgets.dialogs.closing_while_recording_dialog_widget import ClosingDialogWhileRecording
+from src.widgets.dialogs.closing_while_waiting_for_backend_dialog_widget import ClosingDialogWhileWaitingForBackend
+from src.widgets.dialogs.change_ip_dialog_widget import ChangeIPDialog
 from src.ui_module.login_widget_py_ui import Ui_LoginWidget
 from src.ui_module.register_widget_py_ui import Ui_RegisterWidget
-from src.config.config import AUDIO_PATH, get_current_status
+from src.ui_module.main_widget_py_ui import Ui_MainWidget
+from src.config.config import get_current_status, PATH_TO_APP_ICON
 from src.utils.validation_utils import validate_user, check_password
 from src.server.auth_ping_api_client import login_request, register_request
 from src.utils.other_utils import update_token_in_json_and_config
 
-class MainApp(QMainWindow):  # Еcли разносить эти классы в разные файлы, то приложение падает с ошибкой QWidget: Must construct a QApplication before a QWidget
+class MainApp(QMainWindow):  # Еcли разносить эти классы в разные файлы, то приложение падает с ошибкой QWidget: Must construct a QApplication before a QWidget # noqa: E501
     def __init__(self):
         logger.debug("Start initialization MainApp")
         super().__init__()
-        self.setWindowTitle("Приложение")
+
+        self.setWindowTitle("BriefTalk AI")
+        self.setWindowIcon(QIcon(PATH_TO_APP_ICON))
+
         screen_geometry = QApplication.primaryScreen().availableGeometry()
         screen_width, screen_height = screen_geometry.width(), screen_geometry.height()
-        logger.debug(f"Screen size: {screen_width=}, {screen_height=}")
-        if screen_width < 1920 or screen_height < 1050:
-            from src.ui_module.main_widget_mini_py_ui import Ui_MainWidget
-            logger.debug("Using mini version of ui")
-        else:
-            from src.ui_module.main_widget_py_ui import Ui_MainWidget
+        # logger.debug(f"Screen size: {screen_width=}, {screen_height=}")
+        # if screen_width < 1920 or screen_height < 1050:
+        #     from src.ui_module.main_widget_mini_py_ui import Ui_MainWidget
+        #     logger.debug("Using mini version of ui")
+        # else:
+        #     from src.ui_module.main_widget_py_ui import Ui_MainWidget
 
         self.main_class_ui = Ui_MainWidget
-        self.w, self.h = int(screen_width * 0.55), int(screen_height * 0.65)
+        self.w, self.h = max(int(screen_width * 0.55), 1030), max(int(screen_height * 0.65), 600)
         self.setFixedSize(self.w, self.h)
 
         self.init_windows()
@@ -56,12 +64,13 @@ class MainApp(QMainWindow):  # Еcли разносить эти классы в
         else:
             self.stack_widget.setCurrentIndex(1)
 
-    
     def closeEvent(self, event):
         logger.debug("Trying to close the main window")
+        self.main_window.update_waiting_for_backend_var()
+
         if self.main_window.main_tab.recorder_thread.recording:
             logger.debug("Recording is in progress, opening dialog")
-            dialog = ClosingDialog(self.main_window.main_tab)
+            dialog = ClosingDialogWhileRecording(self.main_window.main_tab)
             result = dialog.exec()
 
             if result == QDialog.Accepted:
@@ -72,18 +81,44 @@ class MainApp(QMainWindow):  # Еcли разносить эти классы в
                     self.main_window.main_tab.data_started_saving()
                 elif choice == dialog.option2:
                     logger.debug("User chose not save and close")
-                    self.main_window.main_tab.stop_recording(need_to_save = False)
+                    self.main_window.main_tab.stop_recording(need_to_save=False)
                     self.main_window.main_tab.data_started_saving()
             else:
                 logger.debug("User chose to continue recording")
                 event.ignore()
                 return
+            
+        if self.main_window.waiting_for_backend_response:
+            logger.debug("Waiting for backend so cant close, opening dialog")
+            dialog = ClosingDialogWhileWaitingForBackend(self.main_window.main_tab)
+            result = dialog.exec()
+
+            if result == QDialog.Accepted:
+                choice = dialog.get_result()
+                if choice == dialog.option1:
+                    logger.debug("User chose to close and abort")
+                    msg = QMessageBox()
+                    msg.setWindowTitle("Сообщение")
+                    msg.setText("К сожалению безопасно прервать процессы нельзя. Выключайте компьютер на свой страх и риск =D")  # noqa: E501  # type: ignore
+                    msg.setIcon(QMessageBox.Information)
+                    msg.setStandardButtons(QMessageBox.Ok)
+                    result = msg.exec()
+                    event.ignore()
+                    return
+                elif choice == dialog.option2:
+                    logger.debug("User chose to close and continue")
+            else:
+                logger.debug("User chose to not close window")
+                event.ignore()
+                return
+            
         if not self.main_window.can_close:
             logger.debug("can_close is False, starting timer")
             self.timer = QTimer(self)
             self.timer.timeout.connect(self.check_can_close)
-            self.timer.start(100)  # Проверяем каждые 100 мс
+            self.timer.start(100)
             event.ignore()
+
         else:
             logger.debug("all good, closing the window")
             self.finish_closing(event)
@@ -108,30 +143,28 @@ class MainWidget(QWidget):
         self.ui.setupUi(self)
         self.stack_widget = stack
 
-        self.check_paths()
-
         self.can_close = True
+        self.waiting_for_backend_response = False
 
         self.main_tab = MainTab(self.ui, self)
-        self.file_tree_tab = AudioTab(self.ui, self)
+        self.audio_tab = AudioTab(self.ui, self)
+        self.full_text_tab = FullTextTab(self.ui, self)
+        self.sum_text_tab = SumTextTab(self.ui, self)
     
-    def check_paths(self):
-        logger.debug("Checking paths")
-        self.check_audio_path()
-    
-    def check_audio_path(self):
-        logger.debug("Checking audio path")
-        if not os.path.exists(AUDIO_PATH):
-            logger.debug("Audio path does not exist")
-            logger.debug("Creating audio path")
-            os.mkdir(AUDIO_PATH)
-            if os.path.exists(AUDIO_PATH):
-                logger.debug("Audio path created")
-                return True
-            logger.error("Failed to create audio path")
-            logger.error("Exiting the program")
-            assert False, "Failed to create audio path"
-        logger.debug("Audio path exists")
+    def update_waiting_for_backend_var(self):
+        self.audio_tab.update_active_threads()
+        self.full_text_tab.update_active_threads()
+        self.sum_text_tab.update_active_threads()
+
+        summ = sum([
+            self.audio_tab.active_threads,
+            self.full_text_tab.active_threads,
+            self.sum_text_tab.active_threads
+        ])
+        if summ == 0:
+            self.waiting_for_backend_response = False
+        elif summ > 0:
+            self.waiting_for_backend_response = True
 
 class LoginWidget(QWidget):
     def __init__(self, w, h, stack):
@@ -148,6 +181,8 @@ class LoginWidget(QWidget):
         # self.ui.lineEditPassword.setEchoMode(QLineEdit.Password)
 
         self.ui.labelInfo.setStyleSheet("color: red; font-size: 14px;")
+
+        self.ui.pushButtonIP.clicked.connect(self.changeIP)
 
         self.adjust_pos()
 
@@ -186,6 +221,10 @@ class LoginWidget(QWidget):
         else:
             self.ui.labelInfo.setText(msg)
             return
+    
+    def changeIP(self):
+        dialog = ChangeIPDialog()
+        dialog.exec()
 
 class RegisterWidget(QWidget):
     def __init__(self, w, h, stack):
@@ -199,6 +238,8 @@ class RegisterWidget(QWidget):
 
         self.ui.pushButtonToLogin.clicked.connect(self.switch_to_login)
         self.ui.pushButtonRegister.clicked.connect(self.register)
+
+        self.ui.pushButtonIP.clicked.connect(self.changeIP)
 
         self.adjust_pos()
 
@@ -247,3 +288,7 @@ class RegisterWidget(QWidget):
         else:
             self.ui.labelInfo.setText(msg)
             return
+
+    def changeIP(self):
+        dialog = ChangeIPDialog()
+        dialog.exec()

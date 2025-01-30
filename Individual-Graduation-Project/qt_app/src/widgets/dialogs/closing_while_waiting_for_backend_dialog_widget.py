@@ -3,7 +3,7 @@ logger = logging.getLogger(__name__)
 
 from PySide6.QtWidgets import QDialog, QPushButton, QVBoxLayout, QLabel
 
-class ClosingDialog(QDialog):
+class ClosingDialogWhileWaitingForBackend(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Закрытие окна")
@@ -12,13 +12,13 @@ class ClosingDialog(QDialog):
         layout = QVBoxLayout()
 
         # Заголовок
-        self.label = QLabel("Запись всё еще ведётся.\nВы уверены что хотите закрыть окно?:")
+        self.label = QLabel("Сейчас еще ведётся преобразование ваших файлов\nЧто вы хотите сделать?:")
         layout.addWidget(self.label)
 
         # Кастомные кнопки
-        self.option1 = "Сохранить и закрыть"
-        self.option2 = "Не сохранять и закрыть"
-        self.option3 = "Продолжить запись"
+        self.option1 = "Закрыть окно и прервать преобразование (сейчас недоступно)"
+        self.option2 = "Закрыть окно и продолжить преобразование (не выключайте компьютер и не выходите из учетной записи ОС)"   # noqa: E501  # type: ignore
+        self.option3 = "Не закрывать окно и продолжить преобразование"
 
         self.button1 = QPushButton(self.option1)
         self.button2 = QPushButton(self.option2)

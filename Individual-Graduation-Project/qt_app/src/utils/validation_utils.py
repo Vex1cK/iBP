@@ -8,7 +8,7 @@ def validate_user(email: str):
     try:
         User(email=email)
         return True
-    except ValidationError as e:
+    except ValidationError:
         return False
 
 def check_password(password: str) -> Tuple[bool, str]:

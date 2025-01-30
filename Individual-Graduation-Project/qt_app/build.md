@@ -1,0 +1,3 @@
+- в терминале из директории qt_app: `pyinstaller --onedir --noconsole --exclude PyQt5 --name BriefTalkAI --icon="src/config/BriefTalk AI.png" --add-data "src;src" main.py`
+- Дальше находим .exe где-то в папке dist, после чего переносим папку `src` из `_internal` (которая лежит рядом с .exe) на один уровень наверх (т.е. рядом с .exe)
+- Готово. Приложением можно пользоваться

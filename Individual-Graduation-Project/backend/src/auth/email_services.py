@@ -47,7 +47,7 @@ async def send_confirmation_email(email: str, background_tasks: BackgroundTasks)
     confirm_url = f"{FRONTEND_URL}/auth/verify-email?token={token}"  # Генерация ссылки для подтверждения
 
     subject = "Подтверждение вашего email"
-    body = f"Здравствуйте!\n\nДля подтверждения вашего email перейдите по ссылке: {confirm_url}\n\nЕсли вы не регистрировались, просто проигнорируйте это письмо."
+    body = f"Здравствуйте!\n\nДля подтверждения вашего email перейдите по ссылке: {confirm_url}\n\nЕсли вы не регистрировались, просто проигнорируйте это письмо."  # noqa: E501
 
     background_tasks.add_task(send_email_async, email, subject, body)
 

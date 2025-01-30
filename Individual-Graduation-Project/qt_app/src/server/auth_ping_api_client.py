@@ -12,7 +12,7 @@ def ping() -> Tuple[bool, str]:
     try:
         logger.debug("Пингуем сервер")
         start_time = time.time()
-        response = requests.get(f"{SERVER_URL}/ping_time", params={"start_time": start_time})
+        response = requests.get(f"{SERVER_URL}/ping_time", params={"start_time": start_time}, timeout=2)
         assert response.status_code == 200
         latency = response.json()["latency_ms"]
         logger.debug(f"Задержка: {latency} мс")
@@ -32,6 +32,18 @@ def login_request(email: EmailStr, password: str) -> Tuple[bool, str]:
     except Exception as e:
         logger.error(f"Ошибка при авторизации: {str(e)}")
         return False, str(e)
+
+def logout(token: str) -> bool:
+    try:
+        logger.debug("Отправляем запрос на выход из аккаунта")
+        response = requests.post(f"{SERVER_URL}/auth/logout", json={"access_token": token})
+        if response.status_code == 200:
+            logger.debug("Выход из аккаунта произошел успешно")
+            return True
+        return False
+    except Exception as e:
+        logger.error(f"Ошибка при верификации токена: {str(e)}")
+        return False
 
 def register_request(email: EmailStr, password: str) -> Tuple[bool, str]:
     try:
@@ -57,3 +69,7 @@ def verify_token(token: str) -> bool:
     except Exception as e:
         logger.error(f"Ошибка при верификации токена: {str(e)}")
         return False
+
+def update_token_in_auth_module():
+    global SERVER_URL
+    from src.config.config import SERVER_URL

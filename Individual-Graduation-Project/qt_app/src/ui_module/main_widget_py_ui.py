@@ -80,14 +80,26 @@ class Ui_MainWidget(object):
         self.widget.setObjectName(u"widget")
         sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
         self.widget.setSizePolicy(sizePolicy)
-        self.buttonSettings = QPushButton(self.widget)
-        self.buttonSettings.setObjectName(u"buttonSettings")
-        self.buttonSettings.setGeometry(QRect(120, 10, 181, 51))
-        sizePolicy.setHeightForWidth(self.buttonSettings.sizePolicy().hasHeightForWidth())
-        self.buttonSettings.setSizePolicy(sizePolicy)
+        self.buttonLogOut = QPushButton(self.widget)
+        self.buttonLogOut.setObjectName(u"buttonLogOut")
+        self.buttonLogOut.setGeometry(QRect(120, 10, 181, 51))
+        sizePolicy.setHeightForWidth(self.buttonLogOut.sizePolicy().hasHeightForWidth())
+        self.buttonLogOut.setSizePolicy(sizePolicy)
 
         self.verticalLayout_4.addWidget(self.widget)
 
+        self.widget_18 = QWidget(self.tabMain)
+        self.widget_18.setObjectName(u"widget_18")
+        self.buttonSettings = QPushButton(self.widget_18)
+        self.buttonSettings.setObjectName(u"buttonSettings")
+        self.buttonSettings.setGeometry(QRect(120, 30, 181, 51))
+        sizePolicy.setHeightForWidth(self.buttonSettings.sizePolicy().hasHeightForWidth())
+        self.buttonSettings.setSizePolicy(sizePolicy)
+
+        self.verticalLayout_4.addWidget(self.widget_18)
+
+        self.verticalLayout_4.setStretch(0, 1)
+        self.verticalLayout_4.setStretch(1, 1)
 
         self.gridLayout_4.addLayout(self.verticalLayout_4, 0, 1, 1, 1)
 
@@ -160,17 +172,17 @@ class Ui_MainWidget(object):
 
         self.widget_10 = QWidget(self.tabAudio)
         self.widget_10.setObjectName(u"widget_10")
-        self.buttonRefresh_2 = QPushButton(self.widget_10)
-        self.buttonRefresh_2.setObjectName(u"buttonRefresh_2")
-        self.buttonRefresh_2.setGeometry(QRect(30, 20, 211, 41))
+        self.buttonAudio2Text = QPushButton(self.widget_10)
+        self.buttonAudio2Text.setObjectName(u"buttonAudio2Text")
+        self.buttonAudio2Text.setGeometry(QRect(30, 20, 211, 41))
 
         self.verticalLayout_5.addWidget(self.widget_10)
 
         self.widget_11 = QWidget(self.tabAudio)
         self.widget_11.setObjectName(u"widget_11")
-        self.buttonRefresh_3 = QPushButton(self.widget_11)
-        self.buttonRefresh_3.setObjectName(u"buttonRefresh_3")
-        self.buttonRefresh_3.setGeometry(QRect(30, 20, 211, 41))
+        self.buttonAudio2TextAndSum = QPushButton(self.widget_11)
+        self.buttonAudio2TextAndSum.setObjectName(u"buttonAudio2TextAndSum")
+        self.buttonAudio2TextAndSum.setGeometry(QRect(30, 20, 211, 41))
 
         self.verticalLayout_5.addWidget(self.widget_11)
 
@@ -181,6 +193,9 @@ class Ui_MainWidget(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.widget_12 = QWidget(self.tabAudio)
         self.widget_12.setObjectName(u"widget_12")
+        self.labelInfoAudioTab = QLabel(self.widget_12)
+        self.labelInfoAudioTab.setObjectName(u"labelInfoAudioTab")
+        self.labelInfoAudioTab.setGeometry(QRect(10, 10, 221, 131))
 
         self.verticalLayout_6.addWidget(self.widget_12)
 
@@ -190,6 +205,115 @@ class Ui_MainWidget(object):
         self.gridLayout_5.setColumnStretch(0, 3)
         self.gridLayout_5.setColumnStretch(1, 1)
         self.tabs.addTab(self.tabAudio, "")
+        self.tabFullText = QWidget()
+        self.tabFullText.setObjectName(u"tabFullText")
+        self.gridLayout_2 = QGridLayout(self.tabFullText)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.verticalLayout_9 = QVBoxLayout()
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.treeContainer_2 = QWidget(self.tabFullText)
+        self.treeContainer_2.setObjectName(u"treeContainer_2")
+
+        self.verticalLayout_9.addWidget(self.treeContainer_2)
+
+
+        self.gridLayout_2.addLayout(self.verticalLayout_9, 0, 0, 2, 1)
+
+        self.verticalLayout_8 = QVBoxLayout()
+        self.verticalLayout_8.setSpacing(5)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.verticalLayout_8.setContentsMargins(-1, 0, -1, 0)
+        self.widget_9 = QWidget(self.tabFullText)
+        self.widget_9.setObjectName(u"widget_9")
+        self.buttonRefreshFullText = QPushButton(self.widget_9)
+        self.buttonRefreshFullText.setObjectName(u"buttonRefreshFullText")
+        self.buttonRefreshFullText.setGeometry(QRect(30, 20, 211, 41))
+
+        self.verticalLayout_8.addWidget(self.widget_9)
+
+        self.widget_13 = QWidget(self.tabFullText)
+        self.widget_13.setObjectName(u"widget_13")
+        self.buttonSumText = QPushButton(self.widget_13)
+        self.buttonSumText.setObjectName(u"buttonSumText")
+        self.buttonSumText.setGeometry(QRect(30, 20, 211, 41))
+
+        self.verticalLayout_8.addWidget(self.widget_13)
+
+        self.verticalLayout_8.setStretch(0, 1)
+        self.verticalLayout_8.setStretch(1, 2)
+
+        self.gridLayout_2.addLayout(self.verticalLayout_8, 0, 1, 1, 1)
+
+        self.verticalLayout_10 = QVBoxLayout()
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.widget_15 = QWidget(self.tabFullText)
+        self.widget_15.setObjectName(u"widget_15")
+        self.labelInfoFullTextTab = QLabel(self.widget_15)
+        self.labelInfoFullTextTab.setObjectName(u"labelInfoFullTextTab")
+        self.labelInfoFullTextTab.setGeometry(QRect(10, 10, 221, 131))
+
+        self.verticalLayout_10.addWidget(self.widget_15)
+
+        self.verticalLayout_10.setStretch(0, 1)
+
+        self.gridLayout_2.addLayout(self.verticalLayout_10, 1, 1, 1, 1)
+
+        self.gridLayout_2.setColumnStretch(0, 3)
+        self.gridLayout_2.setColumnStretch(1, 1)
+        self.tabs.addTab(self.tabFullText, "")
+        self.tabSumText = QWidget()
+        self.tabSumText.setObjectName(u"tabSumText")
+        self.gridLayout_6 = QGridLayout(self.tabSumText)
+        self.gridLayout_6.setObjectName(u"gridLayout_6")
+        self.verticalLayout_11 = QVBoxLayout()
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.treeContainer_3 = QWidget(self.tabSumText)
+        self.treeContainer_3.setObjectName(u"treeContainer_3")
+
+        self.verticalLayout_11.addWidget(self.treeContainer_3)
+
+
+        self.gridLayout_6.addLayout(self.verticalLayout_11, 0, 0, 2, 1)
+
+        self.verticalLayout_12 = QVBoxLayout()
+        self.verticalLayout_12.setSpacing(5)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.verticalLayout_12.setContentsMargins(-1, 0, -1, 0)
+        self.widget_14 = QWidget(self.tabSumText)
+        self.widget_14.setObjectName(u"widget_14")
+        self.buttonRefreshSumText = QPushButton(self.widget_14)
+        self.buttonRefreshSumText.setObjectName(u"buttonRefreshSumText")
+        self.buttonRefreshSumText.setGeometry(QRect(30, 20, 211, 41))
+
+        self.verticalLayout_12.addWidget(self.widget_14)
+
+        self.widget_16 = QWidget(self.tabSumText)
+        self.widget_16.setObjectName(u"widget_16")
+
+        self.verticalLayout_12.addWidget(self.widget_16)
+
+
+        self.gridLayout_6.addLayout(self.verticalLayout_12, 0, 1, 1, 1)
+
+        self.verticalLayout_13 = QVBoxLayout()
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.widget_17 = QWidget(self.tabSumText)
+        self.widget_17.setObjectName(u"widget_17")
+        self.labelInfoSumTextTab = QLabel(self.widget_17)
+        self.labelInfoSumTextTab.setObjectName(u"labelInfoSumTextTab")
+        self.labelInfoSumTextTab.setGeometry(QRect(10, 10, 221, 131))
+
+        self.verticalLayout_13.addWidget(self.widget_17)
+
+
+        self.gridLayout_6.addLayout(self.verticalLayout_13, 1, 1, 1, 1)
+
+        self.gridLayout_6.setColumnStretch(0, 3)
+        self.gridLayout_6.setColumnStretch(1, 1)
+        self.tabs.addTab(self.tabSumText, "")
+        self.tabFolder = QWidget()
+        self.tabFolder.setObjectName(u"tabFolder")
+        self.tabs.addTab(self.tabFolder, "")
 
         self.gridLayout.addWidget(self.tabs, 0, 1, 1, 1)
 
@@ -206,6 +330,7 @@ class Ui_MainWidget(object):
         MainWidget.setWindowTitle(QCoreApplication.translate("MainWidget", u"MainWidget", None))
         self.buttonStart.setText(QCoreApplication.translate("MainWidget", u"\u041d\u0430\u0447\u0430\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
         self.buttonStop.setText(QCoreApplication.translate("MainWidget", u"\u041e\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
+        self.buttonLogOut.setText(QCoreApplication.translate("MainWidget", u"\u0412\u044b\u0439\u0442\u0438 \u0438\u0437 \u0430\u043a\u043a\u0430\u0443\u043d\u0442\u0430", None))
         self.buttonSettings.setText(QCoreApplication.translate("MainWidget", u"\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438", None))
         self.labelServerStatus.setText(QCoreApplication.translate("MainWidget", u"<html><head/><body><p><span style=\" font-size:14pt;\">\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u0441\u0435\u0440\u0432\u0435\u0440\u0443: %%</span></p></body></html>", None))
         self.labelCountAudio.setText(QCoreApplication.translate("MainWidget", u"<html><head/><body><p><span style=\" font-size:14pt;\">\u0412\u0441\u0435\u0433\u043e \u0430\u0443\u0434\u0438\u043e \u0444\u0430\u0439\u043b\u043e\u0432: %%</span></p></body></html>", None))
@@ -213,8 +338,18 @@ class Ui_MainWidget(object):
         self.labelPing.setText(QCoreApplication.translate("MainWidget", u"<html><head/><body><p><span style=\" font-size:14pt;\">\u0417\u0430\u0434\u0435\u0440\u0436\u043a\u0430 \u0434\u043e \u0441\u0435\u0440\u0432\u0435\u0440\u0430: %%</span></p></body></html>", None))
         self.tabs.setTabText(self.tabs.indexOf(self.tabMain), QCoreApplication.translate("MainWidget", u"\u0413\u043b\u0430\u0432\u043d\u0430\u044f", None))
         self.buttonRefresh.setText(QCoreApplication.translate("MainWidget", u"\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0444\u0430\u0439\u043b\u043e\u0432", None))
-        self.buttonRefresh_2.setText(QCoreApplication.translate("MainWidget", u"\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0444\u0430\u0439\u043b\u043e\u0432", None))
-        self.buttonRefresh_3.setText(QCoreApplication.translate("MainWidget", u"\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0444\u0430\u0439\u043b\u043e\u0432", None))
+        self.buttonAudio2Text.setText(QCoreApplication.translate("MainWidget", u"\u041f\u0440\u0435\u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u0442\u044c \u0430\u0443\u0434\u0438\u043e \u0432 \u0442\u0435\u043a\u0441\u0442", None))
+        self.buttonAudio2TextAndSum.setText(QCoreApplication.translate("MainWidget", u"\u041f\u0440\u0435\u043e\u0431\u0440\u0430\u0437\u043e\u0432\u0430\u0442\u044c \u0430\u0443\u0434\u0438\u043e\u0432 \u0442\u0435\u043a\u0441\u0442\n"
+"       \u0438 \u0441\u0443\u043c\u043c\u0430\u0440\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c", None))
+        self.labelInfoAudioTab.setText("")
         self.tabs.setTabText(self.tabs.indexOf(self.tabAudio), QCoreApplication.translate("MainWidget", u"\u0410\u0443\u0434\u0438\u043e \u0437\u0430\u043f\u0438\u0441\u0438", None))
+        self.buttonRefreshFullText.setText(QCoreApplication.translate("MainWidget", u"\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0444\u0430\u0439\u043b\u043e\u0432", None))
+        self.buttonSumText.setText(QCoreApplication.translate("MainWidget", u"\u0421\u0443\u043c\u043c\u0430\u0440\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0442\u0435\u043a\u0441\u0442", None))
+        self.labelInfoFullTextTab.setText("")
+        self.tabs.setTabText(self.tabs.indexOf(self.tabFullText), QCoreApplication.translate("MainWidget", u"\u041f\u043e\u043b\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u043e\u0432\u044b\u0435 \u0440\u0430\u0441\u0448\u0438\u0444\u0440\u043e\u0432\u043a\u0438", None))
+        self.buttonRefreshSumText.setText(QCoreApplication.translate("MainWidget", u"\u041e\u0431\u043d\u043e\u0432\u0438\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0444\u0430\u0439\u043b\u043e\u0432", None))
+        self.labelInfoSumTextTab.setText("")
+        self.tabs.setTabText(self.tabs.indexOf(self.tabSumText), QCoreApplication.translate("MainWidget", u"\u0421\u0443\u043c\u043c\u0430\u0440\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u043e\u0432\u044b\u0435 \u0440\u0430\u0441\u0448\u0438\u0444\u0440\u043e\u0432\u043a\u0438", None))
+        self.tabs.setTabText(self.tabs.indexOf(self.tabFolder), QCoreApplication.translate("MainWidget", u"\u041f\u0430\u043f\u043a\u0438", None))
     # retranslateUi
 

@@ -1,6 +1,10 @@
 {
     "none_value": "None",
+    "server_url": "http://81.177.222.209",
+    "token": "SomeToken",
     "audio_path": "audio_recordings",
-    "server_url": "http://45.8.250.26",
-    "token": "None"
+    "full_text_path": "full_texts",
+    "sum_text_path": "sum_texts",
+    "folder_path": "folders",
+    "app_icon_name": "BriefTalk AI.png"
 }

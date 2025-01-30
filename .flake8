@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 120
+ignore = W292, E402, E302, W293, W291, E712
+exclude = 
+    alembic,
+    __init__.py,
+    Individual-Graduation-Project\qt_app\src\tests\,
+    Individual-Graduation-Project\qt_app\src\ui_module\,

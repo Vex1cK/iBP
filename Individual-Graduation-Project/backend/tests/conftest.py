@@ -2,7 +2,7 @@ from typing import AsyncGenerator
 
 import pytest
 from httpx import AsyncClient, ASGITransport
-from database import get_async_session # type: ignore
+from database import get_async_session  # type: ignore
 from src import Base
 from src.main import app
 from .config_for_tests import override_get_async_session, engine_test

@@ -1,6 +1,6 @@
 ## Подкидываем нужный ip
 
-в `.env` в переменной FRONTEND_URL меняем ip на наш сервер
+в `.env` и `config` (ssh) в переменной FRONTEND_URL меняем ip на наш сервер
 
 ## Создание нового юзера
 
@@ -15,10 +15,10 @@
 ### добавляем ключ на локальный комп
 
 - В терминале (\cmd) заходим в `.ssh`
-- создаём ключи на своём пк (если еще нет): `ssh-keygen -t rsa -b 4096 -f id_rsa_server1` и по желанию ставим passphrase
+- создаём ключи на своём пк (если еще нет): `ssh-keygen -t rsa -b 4096 -f id_rsa_brieftalkai` и по желанию ставим passphrase
 - копируем публичный ключ:
-    - Windows: `type id_rsa_server1.pub` - копируем всё что выводится
-    - Linux: `cat id_rsa_server1.pub` - копируем всё что выводится
+    - Windows: `type id_rsa_brieftalkai.pub` - копируем всё что выводится
+    - Linux: `cat id_rsa_brieftalkai.pub` - копируем всё что выводится
 - подключаемся к серверу
 - `mkdir -p /home/vex/.ssh`
 - `nano /home/vex/.ssh/authorized_keys`
@@ -38,7 +38,7 @@
 Host server1
     HostName 45.8.249.209
     User vex
-    IdentityFile C:\Users\Vex\.ssh\id_rsa_server1
+    IdentityFile C:\Users\Vex\.ssh\id_rsa_brieftalkai
 ```
 - После этого можем подключаться к серверу так: `ssh server1`
 
@@ -82,9 +82,32 @@ Host server1
 - Клонируем и настраиваем репу:
     - `GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github" git clone git@github.com:Vex1cK/Individual-Graduation-Project.git`
     - `cd Individual-Graduation-Project`
-    - `git checkout DevelopAudioRecordingsWindow`
+    - `git checkout dev`
     - `cd backend`
     - `mkdir -p ai_models/audio2text/whisper-large-v3`
+    - `mkdir -p ai_models/text2text_summary/bert-large-uncased`
+
+- Ставим драйвера для видюхи (если нужно):
+    - `sudo apt install -y ubuntu-drivers-common alsa-utils`
+    - `sudo ubuntu-drivers devices` - смотрим рекомендуемую версию драйвера
+    - Если видюхшка на архитектуре Pascal: `sudo add-apt-repository ppa:graphics-drivers/ppa -y`
+    - ```
+        sudo apt update
+        for kernel in $(linux-version list); do apt install -y "linux-headers-${kernel}"; done
+      ```
+    - `sudo apt install -y nvidia-driver-<driver_version>` например `sudo apt install -y nvidia-driver-550`
+    - `nvidia-smi`
+    - запрещаем обновления: `nano /etc/apt/apt.conf.d/50unattended-upgrades`
+    - пишем: 
+    ```
+    Unattended-Upgrade::Package-Blacklist {
+            "linux-";
+            "nvidia-";
+    };
+   ```
+    - Там еще куча нюансов с видюхой, я так и не смог поднять докер с доступом к видюхи потому что nvidia блокнули россию))))
+
+- в `entrypoint.sh` нужно чекнуть стоит ли там скип контрольных сумм файлов
 - `sudo docker compose up --build`
 
 useful команда:
@@ -100,8 +123,8 @@ useful команда:
 ## Ресурсы
 
 - 4гб RAM - мало
-- 8гб RAM - хватает
-- 60ГБ ssd - хватает
-- 2 CPU ядра - хватает
+- 8гб RAM - мало.
+- 80ГБ ssd - МАЛО
+- 4 CPU ядра - хватает
 
-6гб не тестил
+12гб не тестил

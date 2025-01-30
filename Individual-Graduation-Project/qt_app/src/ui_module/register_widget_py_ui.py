@@ -59,6 +59,9 @@ class Ui_RegisterWidget(object):
         self.pushButtonRegister = QPushButton(self.widget)
         self.pushButtonRegister.setObjectName(u"pushButtonRegister")
         self.pushButtonRegister.setGeometry(QRect(10, 10, 141, 51))
+        self.pushButtonIP = QPushButton(self.widget)
+        self.pushButtonIP.setObjectName(u"pushButtonIP")
+        self.pushButtonIP.setGeometry(QRect(150, 40, 21, 21))
 
         self.horizontalLayout_2.addWidget(self.widget)
 
@@ -112,6 +115,7 @@ class Ui_RegisterWidget(object):
         self.pushButtonToLogin.setText(QCoreApplication.translate("RegisterWidget", u"\u0412\u043e\u0439\u0442\u0438 \u0432 \u0443\u0436\u0435\n"
 "\u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0449\u0438\u0439 \u0430\u043a\u043a\u0430\u0443\u043d\u0442", None))
         self.pushButtonRegister.setText(QCoreApplication.translate("RegisterWidget", u"\u0417\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u0441\u044f", None))
+        self.pushButtonIP.setText(QCoreApplication.translate("RegisterWidget", u"IP", None))
         self.lineEditEmail.setInputMask("")
         self.lineEditEmail.setText("")
         self.lineEditEmail.setPlaceholderText(QCoreApplication.translate("RegisterWidget", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email", None))

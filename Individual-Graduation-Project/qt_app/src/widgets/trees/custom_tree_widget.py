@@ -1,41 +1,43 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from PySide6.QtWidgets import QTreeWidget, QMenu, QTreeWidgetItem, QMessageBox
+from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem, QMessageBox
 from PySide6.QtCore import Qt, Slot
 from datetime import datetime
 import os
 
-from src.config.config import AUDIO_PATH
-
-
-class TreeWidgetAudioFiles(QTreeWidget):
-    def __init__(self, parent_tab, parent=None):
+class CustomTreeWidget(QTreeWidget):
+    def __init__(self, parent=None):
         super().__init__(parent)
+        self.name = 'None'
+        # logger.debug(f"Starting initializating {self.name}Tree")
 
+        self.root_path = None
+        # self.init_(parent_tab)
+    
+    def init_(self, parent_tab, need_init_2=True):
         self.parent_tab = parent_tab
 
         self.columns_count = 4
-        self.file_name_index          = 0
-        self.file_extension_index     = 1
-        self.file_creation_date_index = 2
-        self.file_size_index          = 3
-        
+        self.file_name_index          = 0  # noqa: E221
+        self.file_extension_index     = 1  # noqa: E221
+        self.file_creation_date_index = 2  # noqa: E221
+        self.file_size_index          = 3  # noqa: E221
 
-        logger.debug("Starting initializating AudioTree")
-
-        self.audio_root = AUDIO_PATH
-
+        if need_init_2:
+            self.init_2()
+    
+    def init_2(self):
         self.setColumnCount(self.columns_count)  # Устанавливаем количество столбцов
-        self.setHeaderLabels(["Название файла", "Расширение", "Дата создания", "Размер файла"])  # Устанавливаем заголовки столбцов
+        self.setHeaderLabels(["Название файла", "Расширение", "Дата создания", "Размер файла"])  # Устанавливаем заголовки столбцов # noqa: E501
 
         self.setEditTriggers(QTreeWidget.NoEditTriggers)
         self.itemDoubleClicked.connect(self.on_item_double_clicked)
         self.itemChanged.connect(self.rename_file)
 
-        logger.debug("AudioTree initialized, starting populating tree")
+        logger.debug(f"{self.name}Tree initialized, starting populating tree")
         self.populate_tree()
-        logger.debug("AudioTree tree populated")
+        logger.debug(f"{self.name}Tree tree populated")
 
     @staticmethod
     def format_file_size(size_in_bytes):
@@ -54,8 +56,8 @@ class TreeWidgetAudioFiles(QTreeWidget):
 
     def populate_tree(self):
         self.itemChanged.disconnect()
-        for item in os.listdir(self.audio_root):
-            item_path = os.path.join(self.audio_root, item)
+        for item in os.listdir(self.root_path):
+            item_path = os.path.join(self.root_path, item)
             if os.path.isfile(item_path):
                 # Получаем дату создания файла
                 item_name = item[:item.find(".")]
@@ -101,40 +103,41 @@ class TreeWidgetAudioFiles(QTreeWidget):
         self.editItem(item, column)
 
     def contextMenuEvent(self, event):
-        logger.debug("Context menu opening")
-        item = self.itemAt(event.pos())
-        if item:
-            menu = QMenu(self)
-            to_text_action = menu.addAction("Преобразовать в текст")
-            rename_action = menu.addAction("Переименовать")
-            delete_action = menu.addAction("Удалить")
+        raise NotImplementedError("Method contextMenuEvent must be implemented in child class")
+        # logger.debug("Context menu opening")
+        # item = self.itemAt(event.pos())
+        # if item:
+        #     menu = QMenu(self)
+        #     to_text_action = menu.addAction("Преобразовать в текст")
+        #     rename_action = menu.addAction("Переименовать")
+        #     delete_action = menu.addAction("Удалить")
             
-            action = menu.exec_(self.mapToGlobal(event.pos()))
+        #     action = menu.exec_(self.mapToGlobal(event.pos()))
 
-            if action == rename_action:
-                self.edit_item(item, 0)
-            elif action == delete_action:
-                self.delete_item(item)
-            elif action == to_text_action:
-                self.parent_tab.convert_audio_to_text(item)
-        else:
-            menu = QMenu(self)
-            refresh_action = menu.addAction("Обновить список")
+        #     if action == rename_action:
+        #         self.edit_item(item, 0)
+        #     elif action == delete_action:
+        #         self.delete_item(item)
+        #     elif action == to_text_action:
+        #         self.parent_tab.convert_audio_to_text(item)
+        # else:
+        #     menu = QMenu(self)
+        #     refresh_action = menu.addAction("Обновить список")
 
-            action = menu.exec_(self.mapToGlobal(event.pos()))
+        #     action = menu.exec_(self.mapToGlobal(event.pos()))
 
-            if action == refresh_action:
-                self.refresh_tree()
+        #     if action == refresh_action:
+        #         self.refresh_tree()
     
-    def rename_file(self, item : QTreeWidgetItem, column):
+    def rename_file(self, item: QTreeWidgetItem, column):
         logger.debug("Renaming file")
         self.itemChanged.disconnect()
         old_name = item.data(column, Qt.UserRole)
         new_name = item.text(column)
         if old_name != new_name:
             file_extension = item.data(self.file_extension_index, Qt.UserRole)
-            old_path = os.path.join(self.audio_root, old_name + file_extension)
-            new_path = os.path.join(self.audio_root, new_name + file_extension)
+            old_path = os.path.join(self.root_path, old_name + file_extension)
+            new_path = os.path.join(self.root_path, new_name + file_extension)
             try:
                 os.rename(old_path, new_path)
                 item.setData(column, Qt.UserRole, new_name)
@@ -150,7 +153,7 @@ class TreeWidgetAudioFiles(QTreeWidget):
         logger.debug("Deleting file")
         file_name = item.text(0)
         file_extension = item.data(self.file_extension_index, Qt.UserRole)
-        file_path = os.path.join(self.audio_root, file_name + file_extension)
+        file_path = os.path.join(self.root_path, file_name + file_extension)
         try:
             if os.path.isfile(file_path):
                 os.remove(file_path)
@@ -170,12 +173,11 @@ class TreeWidgetAudioFiles(QTreeWidget):
         else:
             super().keyPressEvent(event)
         
-    
     def on_item_double_clicked(self, item, column):
         logger.debug("Item double clicked")
         file_name = item.text(column)
         file_extension = item.data(self.file_extension_index, Qt.UserRole)
-        file_path = os.path.join(self.audio_root, file_name + file_extension)
+        file_path = os.path.join(self.root_path, file_name + file_extension)
         
         if os.path.isfile(file_path):
             try:

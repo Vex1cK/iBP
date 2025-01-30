@@ -8,8 +8,20 @@ services:
       - "8000:8000"
     volumes:
       - ~/Individual-Graduation-Project/backend/ai_models/audio2text/whisper-large-v3:/app/ai_models/audio2text/whisper-large-v3
+      - ~/Individual-Graduation-Project/backend/ai_models/text2text_summary/bert-large-uncased:/app/ai_models/text2text_summary/bert-large-uncased
+      # - /I/Vex/Proga/Individual-Graduation-Project/backend/ai_models/audio2text/whisper-large-v3:/app/ai_models/audio2text/whisper-large-v3
+      # - /I/Vex/Proga/Individual-Graduation-Project/backend/ai_models/text2text_summary/bert-large-uncased:/app/ai_models/text2text_summary/bert-large-uncased
     networks:
       - app-network
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [ gpu ]
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=0
 
   nginx:
     image: nginx:latest

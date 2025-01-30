@@ -4,7 +4,7 @@ import os
 
 load_dotenv()
 
-loggers_level = 20
+loggers_level = 10
 # CRITICAL = 50
 # ERROR = 40
 # WARNING = 30
@@ -58,9 +58,11 @@ paths_need_to_check = [
 ]
 
 PATH_TO_A2T_MODEL = os.path.join(here, "..", 'ai_models', 'audio2text', "whisper-large-v3")
+PATH_TO_SUM_MODEL = os.path.join(here, "..", 'ai_models', 'text2text_summary', "bert-large-uncased")
 
 paths_to_models_to_check = [
-    PATH_TO_A2T_MODEL
+    PATH_TO_A2T_MODEL,
+    PATH_TO_SUM_MODEL
 ]
 
 ICO_PATH = os.path.join(here, os.path.join(STATIC_DIR_NAME, ICO_NAME))

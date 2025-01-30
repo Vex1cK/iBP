@@ -101,7 +101,7 @@
         </layout>
        </item>
        <item row="0" column="1">
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,1">
          <item>
           <widget class="QWidget" name="widget" native="true">
            <property name="sizePolicy">
@@ -110,11 +110,34 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <widget class="QPushButton" name="buttonSettings">
+           <widget class="QPushButton" name="buttonLogOut">
             <property name="geometry">
              <rect>
               <x>120</x>
               <y>10</y>
+              <width>181</width>
+              <height>51</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Выйти из аккаунта</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_18" native="true">
+           <widget class="QPushButton" name="buttonSettings">
+            <property name="geometry">
+             <rect>
+              <x>120</x>
+              <y>30</y>
               <width>181</width>
               <height>51</height>
              </rect>
@@ -243,7 +266,7 @@
          </item>
          <item>
           <widget class="QWidget" name="widget_10" native="true">
-           <widget class="QPushButton" name="buttonRefresh_2">
+           <widget class="QPushButton" name="buttonAudio2Text">
             <property name="geometry">
              <rect>
               <x>30</x>
@@ -253,14 +276,14 @@
              </rect>
             </property>
             <property name="text">
-             <string>Обновить список файлов</string>
+             <string>Преобразовать аудио в текст</string>
             </property>
            </widget>
           </widget>
          </item>
          <item>
           <widget class="QWidget" name="widget_11" native="true">
-           <widget class="QPushButton" name="buttonRefresh_3">
+           <widget class="QPushButton" name="buttonAudio2TextAndSum">
             <property name="geometry">
              <rect>
               <x>30</x>
@@ -270,7 +293,8 @@
              </rect>
             </property>
             <property name="text">
-             <string>Обновить список файлов</string>
+             <string>Преобразовать аудиов текст
+       и суммаризировать</string>
             </property>
            </widget>
           </widget>
@@ -280,11 +304,180 @@
        <item row="1" column="1">
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <widget class="QWidget" name="widget_12" native="true"/>
+          <widget class="QWidget" name="widget_12" native="true">
+           <widget class="QLabel" name="labelInfoAudioTab">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>221</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </widget>
          </item>
         </layout>
        </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="tabFullText">
+      <attribute name="title">
+       <string>Полные текстовые расшифровки</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_2" columnstretch="3,1">
+       <item row="0" column="0" rowspan="2">
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <item>
+          <widget class="QWidget" name="treeContainer_2" native="true"/>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_8" stretch="1,2">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="widget_9" native="true">
+           <widget class="QPushButton" name="buttonRefreshFullText">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>20</y>
+              <width>211</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Обновить список файлов</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_13" native="true">
+           <widget class="QPushButton" name="buttonSumText">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>20</y>
+              <width>211</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Суммаризировать текст</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1">
+         <item>
+          <widget class="QWidget" name="widget_15" native="true">
+           <widget class="QLabel" name="labelInfoFullTextTab">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>221</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabSumText">
+      <attribute name="title">
+       <string>Суммаризированные текстовые расшифровки</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_6" columnstretch="3,1">
+       <item row="0" column="0" rowspan="2">
+        <layout class="QVBoxLayout" name="verticalLayout_11">
+         <item>
+          <widget class="QWidget" name="treeContainer_3" native="true"/>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,0">
+         <property name="spacing">
+          <number>5</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="widget_14" native="true">
+           <widget class="QPushButton" name="buttonRefreshSumText">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>20</y>
+              <width>211</width>
+              <height>41</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Обновить список файлов</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_16" native="true"/>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_13" stretch="0">
+         <item>
+          <widget class="QWidget" name="widget_17" native="true">
+           <widget class="QLabel" name="labelInfoSumTextTab">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>221</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabFolder">
+      <attribute name="title">
+       <string>Папки</string>
+      </attribute>
      </widget>
     </widget>
    </item>

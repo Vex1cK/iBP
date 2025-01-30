@@ -93,6 +93,19 @@
          <string>Войти</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="pushButtonIP">
+        <property name="geometry">
+         <rect>
+          <x>150</x>
+          <y>40</y>
+          <width>21</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>IP</string>
+        </property>
+       </widget>
       </widget>
      </item>
     </layout>

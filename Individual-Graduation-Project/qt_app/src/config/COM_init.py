@@ -2,7 +2,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 import ctypes
-from ctypes import HRESULT
+from ctypes import HRESULT  # noqa: F401 # type: ignore
 
 # Определение констант
 COINIT_APARTMENTTHREADED = 0x2  # STA модель

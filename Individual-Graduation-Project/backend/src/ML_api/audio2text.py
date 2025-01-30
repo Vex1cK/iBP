@@ -15,19 +15,23 @@ from config import PATH_TO_OUTPUTS_FILES, PATH_TO_A2T_MODEL
 warnings.filterwarnings("ignore", category=FutureWarning, message=".*inputs.*deprecated.*input_features.*instead")
 warnings.filterwarnings("ignore", message=".*flash attention.*")
 
+
 class AudioToTextAsync:
     def __init__(self, model_name="openai/whisper-large-v3", segment_length=15 * 60 * 1000):
         logger.debug(f"AudioToTextModel starting initialization| chache: {PATH_TO_A2T_MODEL}")
         self.path_to_model = PATH_TO_A2T_MODEL
         self.model_name = model_name
         self.device = ("cuda:0" if torch.cuda.is_available() else "cpu")
+        logger.debug(f"Device: {self.device}")
         self.torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
         self.model = AutoModelForSpeechSeq2Seq.from_pretrained(
-            self.path_to_model, cache_dir=self.path_to_model, torch_dtype=self.torch_dtype, low_cpu_mem_usage=True, use_safetensors=True, local_files_only=True
+            self.path_to_model, cache_dir=self.path_to_model, torch_dtype=self.torch_dtype,
+            low_cpu_mem_usage=True, use_safetensors=True, local_files_only=True
         )
         self.model.to(self.device)
-        self.processor = AutoProcessor.from_pretrained(self.path_to_model, cache_dir=self.path_to_model, local_files_only=True)
+        self.processor = AutoProcessor.from_pretrained(self.path_to_model,
+                                                       cache_dir=self.path_to_model, local_files_only=True)
 
         self.transcriber = pipeline(
             "automatic-speech-recognition",

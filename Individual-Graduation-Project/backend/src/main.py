@@ -14,7 +14,6 @@ from contextlib import asynccontextmanager
 from sqlalchemy.exc import OperationalError
 from fastapi import FastAPI
 from sqlalchemy import text
-import aiosmtplib
 import asyncio
 import uvicorn
 import os
@@ -49,7 +48,7 @@ for path_to_check in paths_to_models_to_check:
         if not os.path.exists(path_to_check):
             os.makedirs(path_to_check, exist_ok=True)
         if os.listdir(path_to_check) == []:
-            logger.error(f"Модель по пути {path_to_check} не найдена! Проверьте файлы проекта, или попробуйте запуститься из докер контейнера.")
+            logger.error(f"Модель по пути {path_to_check} не найдена! Проверьте файлы проекта, или попробуйте запуститься из докер контейнера.")  # noqa: E501
             exit(1)
         logger.debug(f"Файлы модели {path_to_check} найдены")
     except Exception as e:
@@ -100,6 +99,7 @@ def main():
     else:
         logger.error(message)
         return 1
+
 
 if __name__ == "__main__":
     logger.info("Запускаемси")

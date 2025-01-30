@@ -59,6 +59,9 @@ class Ui_LoginWidget(object):
         self.pushButtonLogin = QPushButton(self.widget)
         self.pushButtonLogin.setObjectName(u"pushButtonLogin")
         self.pushButtonLogin.setGeometry(QRect(10, 10, 141, 51))
+        self.pushButtonIP = QPushButton(self.widget)
+        self.pushButtonIP.setObjectName(u"pushButtonIP")
+        self.pushButtonIP.setGeometry(QRect(150, 40, 21, 21))
 
         self.horizontalLayout_2.addWidget(self.widget)
 
@@ -103,6 +106,7 @@ class Ui_LoginWidget(object):
         self.labelPlease.setText(QCoreApplication.translate("LoginWidget", u"<html><head/><body><p><span style=\" font-size:14pt;\">\u041f\u043e\u0436\u0430\u043b\u0443\u0439\u0441\u0442\u0430, \u0432\u043e\u0439\u0434\u0438\u0442\u0435 \u0432 \u0430\u043a\u043a\u0430\u0443\u043d\u0442</span></p></body></html>", None))
         self.pushButtonCreate.setText(QCoreApplication.translate("LoginWidget", u"\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u0430\u043a\u043a\u0430\u0443\u043d\u0442", None))
         self.pushButtonLogin.setText(QCoreApplication.translate("LoginWidget", u"\u0412\u043e\u0439\u0442\u0438", None))
+        self.pushButtonIP.setText(QCoreApplication.translate("LoginWidget", u"IP", None))
         self.lineEditEmail.setInputMask("")
         self.lineEditEmail.setText("")
         self.lineEditEmail.setPlaceholderText(QCoreApplication.translate("LoginWidget", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 email", None))

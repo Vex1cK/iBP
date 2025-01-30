@@ -30,7 +30,8 @@ class Recorder(QObject):
         self.need_to_save = True
 
     def record_output(self):
-        with sc.get_microphone(id=str(sc.default_speaker().name), include_loopback=True).recorder(samplerate=self.sample_rate) as mic:
+        with sc.get_microphone(id=str(sc.default_speaker().name),
+                               include_loopback=True).recorder(samplerate=self.sample_rate) as mic:
             while self.recording.is_set():
                 self.data_out.append(mic.record(numframes=self.num_frames))
 
@@ -67,11 +68,10 @@ class Recorder(QObject):
                 data_int16_out = data_int16_out[:min_length]
                 data_int16_in = data_int16_in[:min_length]
 
-
             all_data = np.concatenate((data_int16_out, data_int16_in), axis=1)
 
-            output_file = os.path.join(self.root, (datetime.now().__str__().split('.')[0].replace(':', '-') + '.wav'))  # unique path
-            with open(output_file, 'w') as file:  # to create file
+            output_file = os.path.join(self.root, (datetime.now().__str__().split('.')[0].replace(':', '-') + '.wav'))  # unique path  # noqa: E501
+            with open(output_file, 'w') as file:  # to create file # noqa: F841
                 ...
             write(output_file, self.sample_rate, all_data)
             logger.debug("Audio file saved")
@@ -133,14 +133,13 @@ class RecorderThread(QThread):
     @Slot()
     def on_data_is_saving(self):
         self.data_is_saving.emit()
-        logger.debug(f"data_is_saving emitted in RecorderThread")
+        logger.debug("data_is_saving emitted in RecorderThread")
     
     @Slot()
     def on_data_saved(self):
         self.data_saved.emit()
-        logger.debug(f"data_saved emitted in RecorderThread")
+        logger.debug("data_saved emitted in RecorderThread")
         
-
 
 # if __name__ == "__main__":
 #     sample_rate = 44100

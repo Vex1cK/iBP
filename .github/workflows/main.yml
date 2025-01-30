@@ -1,0 +1,64 @@
+name: MainPipeline
+
+on:
+  push:
+    branches:
+      - main
+  # pull_request:
+  #   branches:
+  #     - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create required directory
+        run: |
+          mkdir -p Individual-Graduation-Project/backend/ai_models/audio2text/whisper-large-v3
+          mkdir -p Individual-Graduation-Project/backend/ai_models/text2text_summary/bert-large-uncased
+
+      - name: Build application
+        run: |
+          docker compose -f Individual-Graduation-Project/backend/docker-compose.yml build
+
+  lint:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run linter
+        run: |
+          docker compose -f Individual-Graduation-Project/backend/docker-compose.yml run --rm fastapi lint
+
+  test:
+    runs-on: self-hosted
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run tests
+        run: |
+          while sleep 30s; do echo "=== Keeping alive ==="; done &
+          docker compose -f Individual-Graduation-Project/backend/docker-compose.yml run --rm fastapi test
+          kill %1
+
+  deploy:
+    runs-on: self-hosted
+    needs: [build, lint, test]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy application
+        run: |
+          docker compose -f Individual-Graduation-Project/backend/docker-compose.yml up -d --force-recreate --remove-orphans

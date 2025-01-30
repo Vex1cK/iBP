@@ -16,7 +16,9 @@ from .email_services import send_confirmation_email
 router = APIRouter(prefix="/auth")
 
 @router.post("/register", response_model=TokenData)
-async def register(user_data: UserCreate, background_tasks: BackgroundTasks, session: AsyncSession = Depends(get_async_session)):
+async def register(user_data: UserCreate,
+                   background_tasks: BackgroundTasks,
+                   session: AsyncSession = Depends(get_async_session)):
     ok, _ = await check_user_already_registered(user_data.email, session)
     
     if ok:

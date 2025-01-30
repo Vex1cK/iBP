@@ -2,3 +2,7 @@ whisper-large-v3
 ai_models/audio2text
 ai_models/whisper-large-v3
 ai_models/audio2text/whisper-large-v3
+# bert-large-uncased
+# ai_models/text2text_summary
+# ai_models/bert-large-uncased
+ai_models/text2text_summary/bert-large-uncased

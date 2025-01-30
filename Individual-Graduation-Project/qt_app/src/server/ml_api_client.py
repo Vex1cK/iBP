@@ -6,12 +6,13 @@ from PySide6.QtCore import QRunnable
 from src.config.config import get_current_token
 
 class MLClient(QRunnable):
-    def __init__(self, url, input_file_path, output_file_path, callback):
+    def __init__(self, url, input_file_path, output_file_path, callback, json_to_give=None):
         super().__init__()
         self.url = url
         self.input_file_path = input_file_path
         self.output_file_path = output_file_path
         self.callback = callback
+        self.json_to_give = json_to_give
         self.params = {"access_token": get_current_token()}
         logger.debug("MLClient initialized")
 
@@ -27,10 +28,14 @@ class MLClient(QRunnable):
                 self.callback(False, response.detail)
                 return
 
-            with open(self.output_file_path, "w") as file:
+            with open(self.output_file_path, "w", encoding='utf-8') as file:
                 file.write(response.text)
-
+            if self.json_to_give:
+                self.callback(True, 'Ok', json=self.json_to_give)
             self.callback(True, 'Ok')
             logger.debug("MLClient finished")
         except Exception as e:
-            self.callback(False, str(e))
+            if not self.json_to_give:
+                self.callback(False, str(e))
+            else:
+                self.callback(False, str(e), {})
