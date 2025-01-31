@@ -1,0 +1,1 @@
+Ссылки на видео с демонтрацией работы проекта: [RuTube](https://rutube.ru/video/private/6298dbab09535198e168c1cb251b897d/?p=2iRwsgSVLhUrasJGlkrkmA) [Яндекс диск](https://disk.yandex.ru/i/Qa7mFxXs4C3uGQ)
