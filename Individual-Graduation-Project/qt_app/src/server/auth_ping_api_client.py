@@ -33,17 +33,17 @@ def login_request(email: EmailStr, password: str) -> Tuple[bool, str]:
         logger.error(f"Ошибка при авторизации: {str(e)}")
         return False, str(e)
 
-def logout(token: str) -> bool:
+def logout(token: str) -> Tuple[bool, str]:
     try:
         logger.debug("Отправляем запрос на выход из аккаунта")
         response = requests.post(f"{SERVER_URL}/auth/logout", json={"access_token": token})
         if response.status_code == 200:
             logger.debug("Выход из аккаунта произошел успешно")
-            return True
-        return False
+            return True, ""
+        return False, response.json()["detail"]
     except Exception as e:
         logger.error(f"Ошибка при верификации токена: {str(e)}")
-        return False
+        return False, str(e)
 
 def register_request(email: EmailStr, password: str) -> Tuple[bool, str]:
     try:

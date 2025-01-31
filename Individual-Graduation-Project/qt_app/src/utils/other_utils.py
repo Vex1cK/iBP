@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 import ipaddress
 import json
 
-from src.config.config import config_file_path, NONE_VALUE, USER_TOKEN, update_USER_TOKEN, update_SERVER_URL
+from src.config.config import config_file_path, NONE_VALUE, get_current_token, update_USER_TOKEN, update_SERVER_URL
 from src.server.auth_ping_api_client import logout, update_token_in_auth_module
 
 def is_valid_ipv4(address):
@@ -55,7 +55,9 @@ def update_all_paths(new_paths):
     return True
 
 def logout_util():
-    logout(USER_TOKEN)
+    status, msg = logout(get_current_token())
+    if not status:
+        logger.error(f"Не удалось выйти из аккаунта: {msg}")
 
     key = 'token'
     with open(config_file_path, 'r', encoding='utf-8') as file:

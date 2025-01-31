@@ -79,15 +79,36 @@ Host server1
     - `sudo apt-get update`
     - `sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin`
     - Тестим: `sudo docker run hello-world`
-- Клонируем и настраиваем репу:
-    - `GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github" git clone git@github.com:Vex1cK/Individual-Graduation-Project.git`
+- Клонируем .env из репки (если деплой будет из публичной репы, если из приватной то можно не клонировать):
+    - `GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github" git clone --no-checkout git@github.com:Vex1cK/Individual-Graduation-Project.git`
     - `cd Individual-Graduation-Project`
-    - `git checkout dev`
-    - `cd backend`
-    - `mkdir -p ai_models/audio2text/whisper-large-v3`
-    - `mkdir -p ai_models/text2text_summary/bert-large-uncased`
+    - `git checkout origin/dev -- backend/.env`
+    - `sudo usermod -aG docker $USER`
+    - перезаход на сервер
 
-- Ставим драйвера для видюхи (если нужно):
+- Добавляем self-hosted runner (на гитхабе есть все команды)
+
+- Деплоим приложуху через CI\CD
+
+## Че по времени
+От создания сервера до запуска команды `sudo docker compose up --build` у меня ушло 18 минут
+
+за минут 15 образы соберутся и поднимутся
+
+## Ресурсы
+
+- 4гб RAM - мало
+- 8гб RAM - мало
+- 12гб RAM - мало
+- 14гб RAM - в притык
+- 80ГБ ssd - МАЛО
+- 120ГБ ssd - в притык
+- 3 CPU ядра - хватает
+
+
+
+
+<!-- - Ставим драйвера для видюхи (если нужно):
     - `sudo apt install -y ubuntu-drivers-common alsa-utils`
     - `sudo ubuntu-drivers devices` - смотрим рекомендуемую версию драйвера
     - Если видюхшка на архитектуре Pascal: `sudo add-apt-repository ppa:graphics-drivers/ppa -y`
@@ -112,19 +133,4 @@ Host server1
 
 useful команда:
 
-`GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github" git pull`
-
-
-## Че по времени
-От создания сервера до запуска команды `sudo docker compose up --build` у меня ушло 18 минут
-
-за минут 15 образы соберутся и поднимутся
-
-## Ресурсы
-
-- 4гб RAM - мало
-- 8гб RAM - мало.
-- 80ГБ ssd - МАЛО
-- 4 CPU ядра - хватает
-
-12гб не тестил
+`GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa_github" git pull` -->

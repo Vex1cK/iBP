@@ -247,7 +247,7 @@ class RegisterWidget(QWidget):
         X = (self.w - self.ui.widgetMain.width()) // 2
         Y = (self.h - self.ui.widgetMain.height()) // 2
         self.ui.widgetMain.move(X, Y)
-        logger.debug(f"LoginWidget position: {X=}, {Y=}")
+        logger.debug(f"RegisterWidget position: {X=}, {Y=}")
     
     def switch_to_login(self):
         logger.debug("Switching to login window")

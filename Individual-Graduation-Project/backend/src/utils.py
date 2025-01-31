@@ -76,15 +76,18 @@ async def check_token(token: str, session: AsyncSession) -> Tuple[int, str]:
     token_data = await decode_access_token_async(token)
     # logger.debug(f"Token data: {token_data=}")
     if not token_data:
+        logger.debug("Invalid token 1")
         return 401, "Invalid token"
     
     result = await session.execute(select(Token).where(Token.token == token))
     token_db: Token = result.scalars().first()
     if token_db:
+        logger.debug("Invalid token 2")
         return 401, "Invalid token"
     
     user_email = token_data.get("sub")
     if not user_email:
+        logger.debug("Invalid token 3")
         return 401, "Invalid token"
 
     result = await session.execute(select(User).where(User.email == user_email))

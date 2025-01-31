@@ -1,12 +1,16 @@
 [Setup]
 AppName=BriefTalkAI
 AppVersion=1.0
-DefaultDirName={pf}\BriefTalkAI
+DefaultDirName={commondesktop}\BriefTalkAI
 DefaultGroupName=BriefTalkAI
 OutputDir=.
 OutputBaseFilename=BriefTalkAI_Installer
 Compression=lzma
 SolidCompression=yes
+Uninstallable=yes
+AlwaysRestart=yes
+UsePreviousAppDir=no
+UsePreviousGroup=no
 
 [Files]
 Source: "dist\BriefTalkAI\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

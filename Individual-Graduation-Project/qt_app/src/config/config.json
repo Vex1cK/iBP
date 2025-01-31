@@ -1,7 +1,7 @@
 {
     "none_value": "None",
-    "server_url": "http://81.177.222.209",
-    "token": "SomeToken",
+    "server_url": "http://81.177.222.212",
+    "token": "None",
     "audio_path": "audio_recordings",
     "full_text_path": "full_texts",
     "sum_text_path": "sum_texts",

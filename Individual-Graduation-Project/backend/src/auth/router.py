@@ -24,12 +24,12 @@ async def register(user_data: UserCreate,
     if ok:
         raise HTTPException(status_code=409, detail="Email already registered")
 
-    new_user = await add_user_into_db(user_data.email, user_data.password, session)
-
-    status, msg = await send_confirmation_email(new_user.email, background_tasks)
+    status, msg = await send_confirmation_email(user_data.email, background_tasks)
 
     if status != 201:
         raise HTTPException(status_code=status, detail=msg)
+
+    await add_user_into_db(user_data.email, user_data.password, session)
 
     return JSONResponse(content={"msg": "User created. Please check and verify your email"}, status_code=201)
 
@@ -51,7 +51,7 @@ async def login(user_data: UserLogin, session: AsyncSession = Depends(get_async_
 
 @router.post("/logout")
 async def logout(token: TokenData, session: AsyncSession = Depends(get_async_session)):
-    
+    logger.debug(f"Logout: tokenData: {token}, token: {token.access_token}")
     status, msg = await check_token(token.access_token, session)
 
     if status != 200:
@@ -83,6 +83,7 @@ async def verify_email(token: str, session: AsyncSession = Depends(get_async_ses
 
 @router.post("/verify-token")
 async def verify_token(token: TokenData, session: AsyncSession = Depends(get_async_session)):
+    logger.debug(f"verify_token: tokenData: {token}, token: {token.access_token}")
     status, msg = await check_token(token.access_token, session)
 
     if status != 200:

@@ -40,7 +40,11 @@ async def send_email_async(recipient: EmailStr, subject: str, body: str):
     if bool(os.getenv("TESTING")):
         smtp_client = AsyncMock()
 
-    await smtp_client.send_message(message)
+    try:
+        await smtp_client.send_message(message)
+        return True, "OK"
+    except Exception as e:
+        return False, str(e)
 
 async def send_confirmation_email(email: str, background_tasks: BackgroundTasks):
     token = await create_access_token_async(data={"sub": email}, expires_delta=timedelta(hours=1))
@@ -49,6 +53,9 @@ async def send_confirmation_email(email: str, background_tasks: BackgroundTasks)
     subject = "Подтверждение вашего email"
     body = f"Здравствуйте!\n\nДля подтверждения вашего email перейдите по ссылке: {confirm_url}\n\nЕсли вы не регистрировались, просто проигнорируйте это письмо."  # noqa: E501
 
-    background_tasks.add_task(send_email_async, email, subject, body)
+    status, msg = await send_email_async(email, subject, body)
 
-    return 201, "Email sent successfully"
+    if status:
+        return 201, "Email sent successfully"
+    else:
+        return 500, msg
